@@ -25,7 +25,7 @@ class _ProductsOverViewScreenState extends State<ProductsOverViewScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero).then((_) {
-      Provider.of<Products>(context)
+      Provider.of<Products>(context, listen: false)
           .fetchAndSetProducts()
           .then((_) {})
           .catchError((error) {})
