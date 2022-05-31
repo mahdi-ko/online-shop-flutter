@@ -21,25 +21,6 @@ class ProductsOverViewScreen extends StatefulWidget {
 
 class _ProductsOverViewScreenState extends State<ProductsOverViewScreen> {
   bool _showFavoritesOnly = false;
-  // bool isLoading = true;
-  //@override
-  // void initState() {
-  //   Future.delayed(Duration.zero).then((_) {
-  //     Provider.of<Products>(context)
-  //         .fetchAndSetProducts()
-  //         .then((_) {})
-  //         .catchError((error) {})
-  //         .then((_) {
-  //       setState(() {
-  //         isLoading = false;
-  //       });
-  //     });
-
-  //     isLoading = false;
-  //   });
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final cartItems = Provider.of<Cart>(context, listen: false);
@@ -53,18 +34,15 @@ class _ProductsOverViewScreenState extends State<ProductsOverViewScreen> {
               setState(() {
                 if (selectedValue == PopupMenuOptions.Favorites)
                   _showFavoritesOnly = true;
-                else if (selectedValue == PopupMenuOptions.AllItems)
-                  _showFavoritesOnly = false;
+                else if (selectedValue == PopupMenuOptions.AllItems) _showFavoritesOnly = false;
               });
             },
             icon: Icon(
               Icons.more_vert,
             ),
             itemBuilder: (_) => [
-              PopupMenuItem(
-                  child: Text('Show All'), value: PopupMenuOptions.AllItems),
-              PopupMenuItem(
-                  child: Text('Favorites'), value: PopupMenuOptions.Favorites),
+              PopupMenuItem(child: Text('Show All'), value: PopupMenuOptions.AllItems),
+              PopupMenuItem(child: Text('Favorites'), value: PopupMenuOptions.Favorites),
             ],
           ),
           Consumer<Cart>(
@@ -74,16 +52,14 @@ class _ProductsOverViewScreenState extends State<ProductsOverViewScreen> {
             ),
             child: IconButton(
               icon: Icon(Icons.shopping_cart),
-              onPressed: () =>
-                  Navigator.pushNamed(context, CartScreen.routeName),
+              onPressed: () => Navigator.pushNamed(context, CartScreen.routeName),
             ),
           ),
         ],
       ),
       drawer: MainDrawer(),
       body: FutureBuilder(
-        future:
-            Provider.of<Products>(context, listen: false).fetchAndSetProducts(),
+        future: Provider.of<Products>(context, listen: false).fetchAndSetProducts(),
         builder: (ctx2, snapData) {
           if (snapData.connectionState == ConnectionState.waiting)
             return Center(child: CircularProgressIndicator());
