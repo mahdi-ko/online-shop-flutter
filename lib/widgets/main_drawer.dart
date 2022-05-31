@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_shop/providers/auth.dart';
 import 'package:my_shop/providers/cart.dart';
 import 'package:my_shop/screens/cart_screen.dart';
 import 'package:my_shop/screens/manager_products_screen.dart';
@@ -10,36 +11,6 @@ class MainDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final statusBarSize = MediaQuery.of(context).padding.top;
     final cart = Provider.of<Cart>(context, listen: false);
-    Widget rowItems(IconData icon, String name, String goTo,
-        {String args = '', Widget widget}) {
-      return InkWell(
-        onTap: () {
-          Navigator.of(context).pushReplacementNamed(
-            goTo,
-            arguments: args,
-          );
-        },
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Icon(
-                icon,
-                size: 30,
-              ),
-            ),
-            Container(
-              child: Text(
-                name,
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            Spacer(),
-            if (args != '') widget,
-          ],
-        ),
-      );
-    }
 
     return Drawer(
       child: Column(
@@ -65,11 +36,11 @@ class MainDrawer extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          rowItems(Icons.add_shopping_cart, 'Products', '/'),
-          rowItems(
+          RowItems(Icons.add_shopping_cart, 'Products', goTo: '/'),
+          RowItems(
             Icons.shopping_cart,
             'Your Cart',
-            CartScreen.routeName,
+            goTo: CartScreen.routeName,
             args: 'addDrawer',
             widget: Container(
               margin: EdgeInsets.only(right: 10),
@@ -92,11 +63,61 @@ class MainDrawer extends StatelessWidget {
               ),
             ),
           ),
-          rowItems(Icons.payment, 'Your Orders', OrdersScreen.routeName),
-          rowItems(Icons.edit_outlined, 'Manage Products',
-              ManagerProductsScreen.routeName),
+          RowItems(Icons.payment, 'Your Orders', goTo: OrdersScreen.routeName),
+          RowItems(Icons.edit_outlined, 'Manage Products', goTo: ManagerProductsScreen.routeName),
+          RowItems(Icons.logout, 'Logout', onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pushReplacementNamed('/');
+            Provider.of<Auth>(context, listen: false).logOut();
+          }),
         ],
       ),
     );
   }
 }
+
+class RowItems extends StatelessWidget {
+  final IconData icon;
+  final String name;
+  final String goTo;
+  final String args;
+  final Widget widget;
+  final Function onTap;
+
+  const RowItems(this.icon, this.name, {this.goTo, this.args, this.widget, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: goTo != null
+          ? () {
+              Navigator.of(context).pushReplacementNamed(
+                goTo,
+                arguments: args,
+              );
+            }
+          : onTap,
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Icon(
+              icon,
+              size: 30,
+            ),
+          ),
+          Container(
+            child: Text(
+              name,
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          Spacer(),
+          if (args != null) widget,
+        ],
+      ),
+    );
+  }
+}
+
+// Widget rowItems(IconData icon, String name,
+//     {String goTo = '', String args = '', Widget widget = null, Function onTap}) {}

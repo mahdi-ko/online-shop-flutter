@@ -21,24 +21,24 @@ class ProductsOverViewScreen extends StatefulWidget {
 
 class _ProductsOverViewScreenState extends State<ProductsOverViewScreen> {
   bool _showFavoritesOnly = false;
-  bool isLoading = true;
-  @override
-  void initState() {
-    Future.delayed(Duration.zero).then((_) {
-      Provider.of<Products>(context)
-          .fetchAndSetProducts()
-          .then((_) {})
-          .catchError((error) {})
-          .then((_) {
-        setState(() {
-          isLoading = false;
-        });
-      });
-      print('ok');
-      isLoading = false;
-    });
-    super.initState();
-  }
+  // bool isLoading = true;
+  //@override
+  // void initState() {
+  //   Future.delayed(Duration.zero).then((_) {
+  //     Provider.of<Products>(context)
+  //         .fetchAndSetProducts()
+  //         .then((_) {})
+  //         .catchError((error) {})
+  //         .then((_) {
+  //       setState(() {
+  //         isLoading = false;
+  //       });
+  //     });
+
+  //     isLoading = false;
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +80,17 @@ class _ProductsOverViewScreenState extends State<ProductsOverViewScreen> {
           ),
         ],
       ),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : ProductsGrid(_showFavoritesOnly),
       drawer: MainDrawer(),
+      body: FutureBuilder(
+        future:
+            Provider.of<Products>(context, listen: false).fetchAndSetProducts(),
+        builder: (ctx2, snapData) {
+          if (snapData.connectionState == ConnectionState.waiting)
+            return Center(child: CircularProgressIndicator());
+          else
+            return ProductsGrid(_showFavoritesOnly);
+        },
+      ),
     );
   }
 }

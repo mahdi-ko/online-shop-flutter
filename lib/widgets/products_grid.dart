@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_shop/providers/products.dart';
 import 'package:provider/provider.dart';
-import '../providers/product.dart';
+
 import 'product_item.dart';
 
 class ProductsGrid extends StatelessWidget {
@@ -15,7 +15,7 @@ class ProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Products>(context);
+    final productsData = Provider.of<Products>(context, listen: false);
 
     final products = showFavs ? productsData.favoriteItems : productsData.items;
     return products.isNotEmpty

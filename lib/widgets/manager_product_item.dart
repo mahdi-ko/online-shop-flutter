@@ -8,12 +8,11 @@ class ManagerProductItem extends StatelessWidget {
   final String title;
   final String imageUrl;
 
-  const ManagerProductItem(
-      {Key key, this.title, this.imageUrl, @required this.id})
+  const ManagerProductItem({Key key, this.title, this.imageUrl, @required this.id})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final scaffold = Scaffold.of(context);
+    final scaffold = ScaffoldMessenger.of(context);
     return ListTile(
       title: Text(title),
       leading: CircleAvatar(
@@ -28,8 +27,7 @@ class ManagerProductItem extends StatelessWidget {
               icon: Icon(Icons.edit),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(EditProductScreen.routeName, arguments: id);
+                Navigator.of(context).pushNamed(EditProductScreen.routeName, arguments: id);
               },
             ),
             IconButton(
@@ -40,8 +38,7 @@ class ManagerProductItem extends StatelessWidget {
                   context: context,
                   builder: (ctx) => AlertDialog(
                     title: Text('Delete product ' + title),
-                    content:
-                        Text('Are you sure you want to delete this product?'),
+                    content: Text('Are you sure you want to delete this product?'),
                     actions: [
                       FlatButton(
                         onPressed: () {
@@ -53,8 +50,7 @@ class ManagerProductItem extends StatelessWidget {
                         onPressed: () async {
                           try {
                             Navigator.of(ctx).pop();
-                            await Provider.of<Products>(context, listen: false)
-                                .deleteProduct(id);
+                            await Provider.of<Products>(context, listen: false).deleteProduct(id);
                           } catch (error) {
                             scaffold.removeCurrentSnackBar();
                             scaffold.showSnackBar(

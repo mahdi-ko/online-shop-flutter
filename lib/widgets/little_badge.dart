@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class LittleBadge extends StatelessWidget {
   final Widget child;
   final String value;
-  Color color;
+  final Color color;
 
   LittleBadge({
     @required this.child,
@@ -22,8 +22,7 @@ class LittleBadge extends StatelessWidget {
                 right: 8,
                 child: CircleAvatar(
                   radius: 8,
-                  backgroundColor:
-                      color != null ? color : Theme.of(context).accentColor,
+                  backgroundColor: color != null ? color : Theme.of(context).accentColor,
                   child: Padding(
                     padding: const EdgeInsets.all(2),
                     child: FittedBox(

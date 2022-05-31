@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:my_shop/providers/product.dart';
 import 'package:my_shop/providers/products.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
